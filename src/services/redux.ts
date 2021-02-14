@@ -1,10 +1,10 @@
-import { Txn } from '../interfaces';
+import { State, Txn } from '../interfaces';
 
 import { INITIAL_ACCOUNT_BALANCE } from '../constants';
 import { combineReducers } from 'redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: State = {
   accountBalance: {
     original: INITIAL_ACCOUNT_BALANCE,
     current: INITIAL_ACCOUNT_BALANCE,

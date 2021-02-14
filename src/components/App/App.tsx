@@ -1,6 +1,17 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useEffect } from 'react';
+import logo from './logo.png';
+import './App.css';
+
+import Notice from '../Notice/Notice';
+import { State, Txn } from '../../interfaces';
+import { computeBalance } from '../../services/redux';
+// import WithdrawalForm from './WithdrawalForm';
+// import TxnList from './TxnList';
+
+import { useSelector, useDispatch } from 'react-redux';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
 
 // "theme": {
 //   "palette": {
@@ -18,26 +29,48 @@ import "./App.css";
 //     }
 //   }
 // }
+import { Provider } from 'react-redux';
+import { store } from '../../services/redux';
 
-const App: React.FC = () => {
+function App () {
+
+  const dispatch = useDispatch();
+
+  // watch txns if list changes, recompute balance
+  const currentBalance: number = useSelector((state: State) => state.accountBalance.current);
+
+  const txns: Txn[] = useSelector((state: State) => state.txns);
+  const setBalance = () => dispatch(computeBalance({ txns }));
+
+  // update current balance on txn changes
+  useEffect(() => {
+    setBalance();
+  }, [txns]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card>
+      <CardContent>
+        <Typography variant="h5" gutterBottom>
+          Remaining Balance: $ {currentBalance}
+        </Typography>
+        <Typography variant="h6" gutterBottom>
+          Withdraw Cash
+        </Typography>
+        <br />
+        <Typography variant="h6" gutterBottom>
+          Recent Transactions
+        </Typography>
+        <Notice message="Get trackin" stickMs={1000} />
+      </CardContent>
+    </Card>
   );
-};
 
-export default App;
+}
+
+export default function AppContainer() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
