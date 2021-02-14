@@ -1,36 +1,40 @@
 import React, { useEffect } from 'react';
 import logo from './logo.png';
 import './App.css';
+import currency from 'currency.js';
 
-import Notice from '../Notice/Notice';
+import Notice from '../Notice';
 import { State, Txn } from '../../interfaces';
 import { computeBalance } from '../../services/redux';
-// import WithdrawalForm from './WithdrawalForm';
-// import TxnList from './TxnList';
+import WithdrawalForm from '../WithdrawalForm';
+import TxnList from '../TxnList';
 
 import { useSelector, useDispatch } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-// "theme": {
-//   "palette": {
-//     "primary": {
-//       "main": "#36B2AA"
-//     },
-//     "secondary": {
-//       "main": "#945231"
-//     },
-//     "error": {
-//       "main": "#B2363E"
-//     },
-//     "success": {
-//       "main": "#7CB236"
-//     }
-//   }
-// }
 import { Provider } from 'react-redux';
 import { store } from '../../services/redux';
+
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  "palette": {
+    "primary": {
+      "main": "#36B2AA"
+    },
+    "secondary": {
+      "main": "#945231"
+    },
+    "error": {
+      "main": "#B2363E"
+    },
+    "success": {
+      "main": "#7CB236"
+    }
+  }
+});
 
 function App () {
 
@@ -70,7 +74,9 @@ function App () {
 export default function AppContainer() {
   return (
     <Provider store={store}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </Provider>
   );
 }
