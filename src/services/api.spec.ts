@@ -53,4 +53,10 @@ describe('API', function() {
     expect(data.txns).toEqual(mockApiData.transactions);
   });
 
+  test.skip('txns endpoint should return less than 1000 items', async function() {
+    // WARNING: if reached a larger number of txn count, need to sync up with team on implementing a cursored pagination api to keep client latency manageable
+    const data = await fetchRecentTxns();
+    expect(data.txns.length < 1000).toEqual(true);
+  });
+
 });
