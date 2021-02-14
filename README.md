@@ -1,4 +1,50 @@
-This project was bootstrapped with [Create React App with Cypress TypeScript](https://github.com/cypress-io/cra-template-cypress-typescript).
+# ATM Demo
+
+### Objective
+
+ A simple react.js application that lets people see their recent transactions and enter a valid amount to withdraw.
+
+Initial designer napkin sketch
+
+![atm wireframe](./atmdemo_ui_wireframe.jpeg)
+
+### App Reqs
+
+- React.js
+- Redux
+- Display list of names and $ amounts of recent transactions
+- Show form for creating a withdrawal transaction against the balance with "withdraw" button
+- Include user input validation for withdrawals against rules:
+  - Only withdrawal increments of $20 dollars
+  - Cannot withdraw more than the remaining balance (available balance minus recent transactions)
+  - Cannot withdraw < $0
+
+### User Flow
+
+#### Initial Load of Account
+
+1. Pull recent transaction data from [this](https://app.fakejson.com/q/0Pm3bJKu?token=HbqwPS-BSqOehLpig2ePqg) mock api endpoint.
+2. Show the status of the REST request.
+3. Populate a redux store with the results of the api call (1).
+4. Show the results (transactions and amounts) from the redux store.
+5. Store remaining balance value in redux store.
+5. Display the remaining account balance at the top (Given a $2,000 initial starting balance minus the sum of the transaction amounts).
+
+#### Withdraw Funds
+6. User inputs amount to withdraw.
+7. On valid input, clicking withdraw button will reset the form to $0.00 and update the remaining balance in the redux store as well as populate a new transaction in the list of transactions. (Withdraw form has no backend functionality at this time)
+
+#### Visualize Account Activity
+- Show a chart (SVG with animation!) of % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
+- Create a way to filter or sort transactions
+- Parse the withdrawal form value to show a currency value
+
+###### Any extra additions that show off front end expertise are very welcome
+
+-----
+
+# [Dev Env](https://github.com/cypress-io/cra-template-cypress-typescript).
+Create React App with Cypress TypeScript
 
 ## Available Scripts
 

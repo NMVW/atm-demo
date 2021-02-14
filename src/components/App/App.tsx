@@ -2,6 +2,23 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
+// "theme": {
+//   "palette": {
+//     "primary": {
+//       "main": "#36B2AA"
+//     },
+//     "secondary": {
+//       "main": "#945231"
+//     },
+//     "error": {
+//       "main": "#B2363E"
+//     },
+//     "success": {
+//       "main": "#7CB236"
+//     }
+//   }
+// }
+
 const App: React.FC = () => {
   return (
     <div className="App">
