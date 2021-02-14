@@ -52,18 +52,20 @@ function App () {
   }, [txns]);
 
   return (
-    <Card>
+    <Card style={{ maxWidth: 800, display: 'flex', padding: '2rem' }}>
       <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Remaining Balance: $ {currentBalance}
+        <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'center' }}>
+          Remaining Balance: { currency(currentBalance).format() }
         </Typography>
         <Typography variant="h6" gutterBottom>
           Withdraw Cash
         </Typography>
+        <WithdrawalForm />
         <br />
         <Typography variant="h6" gutterBottom>
           Recent Transactions
         </Typography>
+        <TxnList txns={txns} />
         <Notice message="Get trackin" stickMs={1000} />
       </CardContent>
     </Card>

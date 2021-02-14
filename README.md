@@ -41,6 +41,12 @@ Initial designer napkin sketch
 
 ###### Any extra additions that show off front end expertise are very welcome
 
+##### Service Unit Tests
+`yarn test`
+
+##### E2E Integration Tests
+`yarn cypress:open`
+
 -----
 
 # [Dev Env](https://github.com/cypress-io/cra-template-cypress-typescript).

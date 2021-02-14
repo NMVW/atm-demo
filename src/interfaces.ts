@@ -1,5 +1,5 @@
 export interface Txn {
-  id?: string
+  id?: number
   name: string
   amount: number
 }

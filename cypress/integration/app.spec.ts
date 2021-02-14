@@ -7,6 +7,10 @@ describe("App", function() {
   });
 
   it("renders the app", function() {
-    cy.get(".App-link").should("contain", "Learn React");
+    // how to point to env vars?
+    cy.get(".AccountBalance").should("contain", "$2,000.00");
+    cy.get(".WithdrawalForm").should("contain", "$0.00");
+    cy.get(".TxnTable").should("contain", "No rows");
   });
+
 });
