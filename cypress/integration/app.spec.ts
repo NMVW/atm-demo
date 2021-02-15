@@ -3,6 +3,7 @@
 
 describe("App", function() {
   beforeEach(function() {
+    cy.intercept("https://app.fakejson.com/q/0Pm3bJKu?token=HbqwPS-BSqOehLpig2ePqg", { fixture: 'transactions.json' });
     cy.visit("/");
   });
 

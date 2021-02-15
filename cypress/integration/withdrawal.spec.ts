@@ -1,11 +1,10 @@
 // type definitions for Cypress object "cy"
 /// <reference types="cypress" />
 
-import { groupBy } from "cypress/types/lodash";
-
 describe('ATM Withdrawal', function() {
 
   before(() => {
+    cy.intercept("https://app.fakejson.com/q/0Pm3bJKu?token=HbqwPS-BSqOehLpig2ePqg", { fixture: 'transactions.json' });
     cy.visit('/');
   });
 
