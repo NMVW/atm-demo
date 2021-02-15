@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import currency from 'currency.js';
 
 import AmountSlider from './AmountSlider';
+import BalanceBar from '../BalanceChart';
 
 export default function WithdrawalForm(props: { isLoading: boolean }) {
 
@@ -38,15 +39,16 @@ export default function WithdrawalForm(props: { isLoading: boolean }) {
   }, [amount, currentBalance]);
 
   return (
-    <Card className="WithdrawalForm" style={{ display: 'flex' }}>
+    <Card className="WithdrawalForm" style={{ display: 'flex', flexDirection: 'column' }}>
       <div style={{ marginLeft: '1rem' }}>
         <AmountSlider amount={amount} setAmount={setAmount} />
       </div>
-      <div style={{ marginLeft: '1rem', marginTop: '1rem', paddingRight: '1rem' }}>
-        <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg) || props.isLoading}>Withdraw</Button>
+      <div style={{ paddingRight: '.25rem', display: 'flex', justifyContent: 'flex-end' }}>
+        <Typography className="OverdraftMsg" style={{ marginRight: '1rem' }} hidden={!invalidMsg || invalidMsg === '0'} variant="caption" color="error">{ invalidMsg }</Typography>
         <br />
-        <Typography className="OverdraftMsg" style={{ textAlign: 'center' }} hidden={!invalidMsg || invalidMsg === '0'} variant="caption" color="error">{ invalidMsg }</Typography>
+        <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg) || props.isLoading}>Withdraw</Button>
       </div>
+      <BalanceBar nextAmount={amount} />
     </Card>
   );
 }

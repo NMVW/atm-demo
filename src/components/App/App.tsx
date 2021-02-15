@@ -95,7 +95,7 @@ function App () {
           <Typography variant="caption" hidden={txnsLoadingStatus !== 'error'}>Offline</Typography>
           <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'right' }}>
             Remaining Balance<br />
-            { !isLoading ? <span>{currency(currentBalance).format()}</span>: <Skeleton variant="text" height={40} /> }
+            { !isLoading ? <span style={{ color: 'teal' }}>{currency(currentBalance).format()}</span>: <Skeleton variant="text" height={40} /> }
           </Typography>
         </header>
         <Typography variant="h6" gutterBottom>
