@@ -93,4 +93,29 @@ describe('ATM Withdrawal', function() {
     cy.get('.AccountBalance').should('contain', '$413.12');
 
   });
+
+  describe('Pending Withdrawals', function() {
+
+    beforeEach(() => {
+      cy.wait(3000); // wait for any pending withdrawal txn to pass
+    });
+
+    it.only('withdrawal transaction should be abortable within undo window of 3 seconds.', function() {
+      cy.get('@$slider')
+        .trigger('mousedown', { which: 1 })
+        .trigger('mousemove', { clientX: 200 })
+        .trigger('mouseup');
+
+      // before txn
+      cy.get('@$submitBtn').click();
+      cy.wait(2800);
+
+      // undo txn before time limit
+      cy.get('.UndoBtn').click();
+
+      cy.get('@$amountValue').should('contain', '$0.00');
+      cy.get('.AccountBalance').should('contain', '$713.12');
+
+    });
+  });
 });

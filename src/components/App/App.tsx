@@ -107,7 +107,7 @@ function App () {
         <Typography variant="h6" gutterBottom>
           Withdraw Cash
         </Typography>
-        <WithdrawalForm isLoading={isLoading} />
+        <WithdrawalForm setToast={setToast} isLoading={isLoading} />
         <br />
         <Typography variant="h6" gutterBottom>
           Recent Transactions

@@ -12,8 +12,9 @@ import currency from 'currency.js';
 
 import AmountSlider from './AmountSlider';
 import BalanceBar from '../BalanceChart';
+import UndoTxnBtn from './UndoTxnBtn';
 
-export default function WithdrawalForm(props: { isLoading: boolean }) {
+export default function WithdrawalForm(props: { setToast: (toast: string) => void, isLoading: boolean }) {
 
   const dispatch = useDispatch();
 
@@ -21,9 +22,12 @@ export default function WithdrawalForm(props: { isLoading: boolean }) {
 
   const [ amount, setAmount ] = useState(0.00);
   const [ invalidMsg, setInvalidMsg ] = useState('');
+  const [ isUndoOpen, openUndo ] = useState(false);
 
   const withdrawAmount = (ev: any) => {
     dispatch(addTxn({ name: 'ATM Cash Withdrawal', amount }));
+    openUndo(true);
+    props.setToast(`Withdrawing ${currency(amount).format()} ...`);
     // reset form on submission
     setAmount(0.00);
   };
@@ -46,7 +50,7 @@ export default function WithdrawalForm(props: { isLoading: boolean }) {
       <div style={{ paddingRight: '.25rem', display: 'flex', justifyContent: 'flex-end' }}>
         <Typography className="OverdraftMsg" style={{ marginRight: '1rem' }} hidden={!invalidMsg || invalidMsg === '0'} variant="caption" color="error">{ invalidMsg }</Typography>
         <br />
-        <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg) || props.isLoading}>Withdraw</Button>
+        { isUndoOpen ? <UndoTxnBtn close={() => openUndo(false)} timeWindow={3000} setToast={props.setToast} /> : <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg) || props.isLoading}>Withdraw</Button> }
       </div>
       <BalanceBar nextAmount={amount} />
     </Card>
