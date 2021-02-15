@@ -53,10 +53,10 @@ describe('ATM Withdrawal', function() {
       .trigger('mouseup');
 
     cy.get('@$amountValue').should('contain', '$2,000.00');
-    cy.get('@$submitBtn').should('not.have.disabled');
+    cy.get('@$submitBtn').should('be.disabled');
   });
 
-  it('withdraw valid amount below remaining balance ($2,000.00), update account balance, and update list of transactions', function() {
+  it('withdraw valid amount below remaining balance ($713.12), update account balance, and update list of transactions', function() {
 
     cy.get('@$slider')
       .trigger('mousedown', { which: 1 })
@@ -69,7 +69,7 @@ describe('ATM Withdrawal', function() {
 
     // after txn
     cy.get('@$amountValue').should('contain', '$0.00');
-    cy.get('.AccountBalance').should('contain', '$1,700.00');
+    cy.get('.AccountBalance').should('contain', '$413.12');
 
     // check txn made it in list
     cy.get('.TxnTable').should('contain', 'ATM Cash Withdrawal');
@@ -77,7 +77,7 @@ describe('ATM Withdrawal', function() {
 
   });
 
-  it('attempt to withdraw invalid amount beyond remaining balance ($1,700.00) should notify user', function() {
+  it('attempt to withdraw invalid amount beyond remaining balance ($413.12) should notify user', function() {
 
     cy.get('@$slider')
       .trigger('mousedown', { which: 1 })
@@ -87,11 +87,11 @@ describe('ATM Withdrawal', function() {
     // attempt txn
     cy.get('@$amountValue').should('contain', '$1,880.00');
     cy.get('@$submitBtn').should('be.disabled');
-    cy.get('.OverdraftMsg').should('contain', 'Overdraft of -$180.00');
+    cy.get('.OverdraftMsg').should('contain', 'Overdraft of -$1,466.88');
 
     // noop
     cy.get('@$amountValue').should('contain', '$1,880.00');
-    cy.get('.AccountBalance').should('contain', '$1,700.00');
+    cy.get('.AccountBalance').should('contain', '$413.12');
 
   });
 });
