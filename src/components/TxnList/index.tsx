@@ -10,11 +10,12 @@ const columns: ColDef[] = [
   { field: 'amount', headerName: 'Amount', width: 130 },
 ];
 
-export default function DataTable(props: { txns: Txn[] }) {
+export default function DataTable(props: { isLoading: boolean, txns: Txn[] }) {
   const txns = props.txns.map((txn: Txn) => ({ ...txn, amount: currency(txn.amount).format() }));
+
   return (
     <div className="TxnTable" style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={txns} columns={columns} pageSize={5} />
+      <DataGrid rows={txns.reverse()} columns={columns} pageSize={5} loading={props.isLoading} />
     </div>
   );
 }

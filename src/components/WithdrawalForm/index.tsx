@@ -12,7 +12,7 @@ import currency from 'currency.js';
 
 import AmountSlider from './AmountSlider';
 
-export default function WithdrawalForm() {
+export default function WithdrawalForm(props: { isLoading: boolean }) {
 
   const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ export default function WithdrawalForm() {
         <AmountSlider amount={amount} setAmount={setAmount} />
       </div>
       <div style={{ marginLeft: '1rem', marginTop: '1rem', paddingRight: '1rem' }}>
-        <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg)}>Withdraw</Button>
+        <Button className="SubmitBtn" variant="contained" color="primary" onClick={withdrawAmount} disabled={Boolean(invalidMsg) || props.isLoading}>Withdraw</Button>
         <br />
         <Typography className="OverdraftMsg" style={{ textAlign: 'center' }} hidden={!invalidMsg || invalidMsg === '0'} variant="caption" color="error">{ invalidMsg }</Typography>
       </div>
