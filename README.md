@@ -6,7 +6,7 @@
 
 Initial designer napkin sketch
 
-![atm wireframe](./atmdemo_ui_wireframe.jpeg)
+![atm wireframe](https://raw.githubusercontent.com/NMVW/atm-demo/master/atmdemo_ui_wireframe.jpg)
 
 ### App Reqs
 

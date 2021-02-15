@@ -15,6 +15,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import OfflineIcon from '@material-ui/icons/OfflineBolt';
 
 import { Provider } from 'react-redux';
@@ -92,7 +93,11 @@ function App () {
     <Card style={{ maxWidth: 800, display: 'flex', padding: '2rem' }}>
       <CardContent>
         <header style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
-          <Avatar className={isLoading ? 'App-logo': ''} src={logo} style={{ marginBottom: '1rem' }} />
+          <a href="https://github.com/NMVW/atm-demo">
+            <Tooltip title="Github repo" placement="top-start">
+              <Avatar className={isLoading ? 'App-logo': ''} src={logo} style={{ marginBottom: '1rem' }} />
+            </Tooltip>
+          </a>
           <Typography variant="overline" hidden={txnsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
           <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'right' }}>
             Remaining Balance<br />
