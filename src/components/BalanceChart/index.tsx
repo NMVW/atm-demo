@@ -1,4 +1,4 @@
-import { Txn, State } from '../../interfaces';
+import { State } from '../../interfaces';
 
 import { useSelector } from 'react-redux';
 import React, { ReactNode, ReactNodeArray } from 'react';

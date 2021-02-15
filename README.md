@@ -35,11 +35,15 @@ Initial designer napkin sketch
 7. On valid input, clicking withdraw button will reset the form to $0.00 and update the remaining balance in the redux store as well as populate a new transaction in the list of transactions. (Withdraw form has no backend functionality at this time)
 
 #### Visualize Account Activity
-- Show a chart (SVG with animation!) of % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
+- Show a balance bar svg chart with % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
 - Create a way to filter or sort transactions
 - Parse the withdrawal form value to show a currency value
 
 ###### Any extra additions that show off front end expertise are very welcome
+
+Offline mode supported - block `app.fakejson.com` request url in console to see client-side functionality
+
+-----
 
 ##### Service Unit Tests
 `yarn test`
@@ -51,8 +55,6 @@ Initial designer napkin sketch
 
 # [Dev Env](https://github.com/cypress-io/cra-template-cypress-typescript).
 Create React App with Cypress TypeScript
-
-## Available Scripts
 
 In the project directory, you can run:
 

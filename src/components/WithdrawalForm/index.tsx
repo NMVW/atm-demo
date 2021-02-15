@@ -1,5 +1,5 @@
 import { addTxn } from '../../services/redux';
-import { Txn, State } from '../../interfaces';
+import { State } from '../../interfaces';
 
 import React from 'react';
 import { useEffect, useState } from 'react';
