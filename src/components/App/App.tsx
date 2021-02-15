@@ -15,6 +15,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
+import OfflineIcon from '@material-ui/icons/OfflineBolt';
 
 import { Provider } from 'react-redux';
 import { store } from '../../services/redux';
@@ -92,7 +93,7 @@ function App () {
       <CardContent>
         <header style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
           <Avatar className={isLoading ? 'App-logo': ''} src={logo} style={{ marginBottom: '1rem' }} />
-          <Typography variant="caption" hidden={txnsLoadingStatus !== 'error'}>Offline</Typography>
+          <Typography variant="overline" hidden={txnsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
           <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'right' }}>
             Remaining Balance<br />
             { !isLoading ? <span style={{ color: 'teal' }}>{currency(currentBalance).format()}</span>: <Skeleton variant="text" height={40} /> }
