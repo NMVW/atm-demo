@@ -2,14 +2,18 @@ import { State, Txn } from '../interfaces';
 
 import { INITIAL_ACCOUNT_BALANCE } from '../constants';
 import { combineReducers } from 'redux';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
+import { fetchRecentTxns } from './api';
 
 const INITIAL_STATE: State = {
   accountBalance: {
     original: INITIAL_ACCOUNT_BALANCE,
     current: INITIAL_ACCOUNT_BALANCE,
   },
-  txns: [],
+  txns: {
+    status: '',
+    list: [],
+  },
 };
 
 interface Action {
@@ -68,15 +72,24 @@ class TxnID {
   }
 }
 
+// creates sub action types /<fulfilled|pending|rejected>
+const fetchTxns = createAsyncThunk(
+  'txns/fetch',
+  async () => {
+    const response = await fetchRecentTxns();
+    return response;
+  },
+);
+
 const txnsSlice = createSlice({
   name: 'txns',
   initialState: INITIAL_STATE.txns,
   reducers: {
 
     addTxn: {
-      reducer(state: Txn[], action: Action): any {
+      reducer(state: {status: string, list: Txn[] | []}, action: Action): any {
         const txn: Txn = action.payload;
-        return state.concat(txn);
+        return { status: state.status, list: state.list.concat(txn as any) };
       },
       prepare(txn: Txn) {
         // autogenerate txn id prior
@@ -84,16 +97,39 @@ const txnsSlice = createSlice({
       },
     },
 
-    removeTxn(state: Txn[] | [], action: Action): any {
+    removeTxn(state: {status: string, list: Txn[] | []}, action: Action): any {
+      // prereq for "undo" feature
       const id = action.payload;
-      return state.filter(txn => txn.id !== id);
+      return { status: state.status, list: state.list.filter(txn => txn.id !== id) };
     },
 
   },
+
+  // handle async request states
+  extraReducers: (builder: ActionReducerMapBuilder<{status: string, list: Txn[]}>) => {
+
+    builder.addCase(fetchTxns.pending, (state: { status: string, list: Txn[] }, action: any) => {
+      state.status = 'pending';
+      return state;
+    });
+
+    builder.addCase(fetchTxns.fulfilled, (state: { status: string, list: Txn[] }, action: any) => {
+      state.status = action.payload.status; // can be error
+      return state;
+    });
+
+    builder.addCase(fetchTxns.rejected, (state: { status: string, list: Txn[] }, action: any) => {
+      state.status = 'error';
+      return state;
+    });
+
+  },
+
 });
 
 export const { computeBalance } = accountSlice.actions;
 export const { addTxn, removeTxn } = txnsSlice.actions;
+export { fetchTxns };
 
 export const reducer = combineReducers({
   accountBalance: accountSlice.reducer,

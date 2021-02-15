@@ -11,5 +11,8 @@ export interface AccountBalance {
 
 export interface State {
   accountBalance: AccountBalance
-  txns: Array<Txn> | []
+  txns: {
+    status: 'online' | 'pending' | 'error' | ''
+    list: Array<Txn> | []
+  }
 }

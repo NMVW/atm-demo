@@ -1,6 +1,7 @@
 import { fetchRecentTxns } from './api';
 
 const mockApiData = {
+  // NOTE: assumption that list of txns is ordered time sequentially
   "transactions": [
     {
       "amount": 12.53,

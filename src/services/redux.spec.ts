@@ -83,7 +83,7 @@ describe('Redux', function() {
         const nextState = reducer(INITIAL_STATE, addTxn(txnData));
         const finalState = reducer(nextState, addTxn(txnData));
 
-        expect(finalState).toEqual({ ...INITIAL_STATE, txns: [{ id: 0, ...txnData}, { id: 1, ...txnData }] });
+        expect(finalState).toEqual({ ...INITIAL_STATE, txns: { status: INITIAL_STATE.txns.status, list: [{ id: 0, ...txnData}, { id: 1, ...txnData }] } });
       });
 
       test('removing txns should shrink txn list', function() {
@@ -91,7 +91,7 @@ describe('Redux', function() {
         const nextState = reducer(INITIAL_STATE, addTxn(txnData));
         const finalState = reducer(nextState, removeTxn(2));
 
-        expect(finalState.txns.length).toEqual(0);
+        expect(finalState.txns.list.length).toEqual(0);
 
       });
     });
@@ -100,7 +100,7 @@ describe('Redux', function() {
 
       test('adding txns should not change balance', function() {
         const nextState = reducer(INITIAL_STATE, addTxn(txnData));
-        expect(nextState.txns).toEqual(expect.not.objectContaining(INITIAL_STATE.txns));
+        expect(nextState.txns.list).toEqual(expect.not.objectContaining(INITIAL_STATE.txns.list));
         expect(nextState.accountBalance.current).toEqual(INITIAL_STATE.accountBalance.current);
       });
 
@@ -108,7 +108,7 @@ describe('Redux', function() {
 
         let runningBalance = +INITIAL_STATE.accountBalance.original.toFixed(2);
 
-        const initialBalanceState = reducer(INITIAL_STATE, computeBalance({ txns: INITIAL_STATE.txns }));
+        const initialBalanceState = reducer(INITIAL_STATE, computeBalance({ txns: INITIAL_STATE.txns.list }));
         expect(initialBalanceState.accountBalance.current).toEqual(runningBalance);
 
         // add txn
@@ -116,7 +116,7 @@ describe('Redux', function() {
         runningBalance -= txnData.amount;
         runningBalance = +runningBalance.toFixed(2);
         // compute balance
-        const firstAddState = reducer(nextState, computeBalance({ txns: nextState.txns }));
+        const firstAddState = reducer(nextState, computeBalance({ txns: nextState.txns.list }));
         expect(firstAddState.accountBalance.current).toEqual(runningBalance);
 
         // add txn
@@ -124,7 +124,7 @@ describe('Redux', function() {
         runningBalance -= txnData.amount;
         runningBalance = +runningBalance.toFixed(2);
         // compute balance
-        const sumState = reducer(secondAddState, computeBalance({ txns: secondAddState.txns }));
+        const sumState = reducer(secondAddState, computeBalance({ txns: secondAddState.txns.list }));
         expect(sumState.accountBalance.current).toEqual(runningBalance);
         
         // remove txns
@@ -133,7 +133,7 @@ describe('Redux', function() {
         runningBalance += txnData.amount;
         runningBalance = +runningBalance.toFixed(2);
         // compute balance
-        const finalState = reducer(originalState, computeBalance({ txns: originalState.txns }));
+        const finalState = reducer(originalState, computeBalance({ txns: originalState.txns.list }));
         expect(finalState.accountBalance.current).toEqual(runningBalance);
 
       });

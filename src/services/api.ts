@@ -7,28 +7,44 @@ interface AppResponse {
   txns: Array<Txn> | []
 }
 
+// wrapper for timing out outbound fetch requests
+async function fetchWithTimeout(resource: string, options: { timeout: number }) {
+  const { timeout = 8000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  const response = await fetch(resource, {
+    ...options,
+    signal: controller.signal,
+  });
+
+  clearTimeout(id);
+
+  return response;
+}
+
 export async function fetchRecentTxns(): Promise<AppResponse> {
 
-  if (!txns_api_url) {
-    console.error('Offline mode: Txn API Url env var not set');
-    return {
-      status: 'offline',
-      txns: [],
-    };
-  }
-
   try {
-    const response = await fetch(txns_api_url);
+    const response = await fetchWithTimeout(txns_api_url, { timeout: 8000 });
     const data = await response.json();
     return {
       status: 'online',
       txns: data.transactions,
     };
   } catch (error) {
-    console.error('Handle API call error gracefully', error);
-    return {
-      status: 'error',
-      txns: [],
-    };
+    if (error.name === 'AbortError') {
+      // request timed out
+      return {
+        status: 'offline',
+        txns: [],
+      };
+    } else {
+      return {
+        status: 'error',
+        txns: [],
+      };
+    }
   }
 }
