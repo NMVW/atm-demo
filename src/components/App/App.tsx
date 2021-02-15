@@ -93,7 +93,7 @@ function App () {
     <Card style={{ maxWidth: 800, display: 'flex', padding: '2rem' }}>
       <CardContent>
         <header style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
-          <a href="https://github.com/NMVW/atm-demo">
+          <a href="https://github.com/NMVW/atm-demo" target="_blank" rel="noopener noreferrer">
             <Tooltip title="Github repo" placement="top-start">
               <Avatar className={isLoading ? 'App-logo': ''} src={logo} style={{ marginBottom: '1rem' }} />
             </Tooltip>
