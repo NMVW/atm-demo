@@ -10,14 +10,14 @@ Initial designer napkin sketch
 
 ### App Reqs
 
-- React.js
-- Redux
-- Display list of names and $ amounts of recent transactions
-- Show form for creating a withdrawal transaction against the balance with "withdraw" button
-- Include user input validation for withdrawals against rules:
-  - Only withdrawal increments of $20 dollars
-  - Cannot withdraw more than the remaining balance (available balance minus recent transactions)
-  - Cannot withdraw < $0
+- [x] React.js
+- [x] Redux
+- [x] Display list of names and $ amounts of recent transactions
+- [x] Show form for creating a withdrawal transaction against the balance with "withdraw" button
+- [x] Include user input validation for withdrawals against rules:
+  - [x] Only withdrawal increments of $20 dollars
+  - [x] Cannot withdraw more than the remaining balance (available balance minus recent transactions)
+  - [x] Cannot withdraw < $0
 
 ### User Flow
 
@@ -35,9 +35,9 @@ Initial designer napkin sketch
 7. On valid input, clicking withdraw button will reset the form to $0.00 and update the remaining balance in the redux store as well as populate a new transaction in the list of transactions. (Withdraw form has no backend functionality at this time)
 
 #### Visualize Account Activity
-- Show a balance bar svg chart with % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
-- Create a way to filter or sort transactions
-- Parse the withdrawal form value to show a currency value
+- [x] Show a balance bar svg chart with % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
+- [x] Create a way to filter or sort transactions
+- [x] Parse the withdrawal form value to show a currency value
 
 ###### Any extra additions that show off front end expertise are very welcome
 
