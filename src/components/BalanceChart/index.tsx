@@ -67,7 +67,7 @@ export default function BalanceChart({ nextAmount }: { nextAmount: number }) {
     </g>
   );
 
-  const scenarioRatio = (nextAmount > 0) && (current - nextAmount) > 0 ? nextAmount / original: 0;
+  const scenarioRatio = (nextAmount > 0) && (current - nextAmount) >= 0 ? nextAmount / original: 0;
   const scenarioBar = (
     <Bar
       fill="red"
