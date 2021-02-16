@@ -2,13 +2,20 @@
   text-align: center;
 }
 
-.App-logo {
+.App-logo-load {
   height: 40vmin;
-  pointer-events: none;
+}
+
+.App-logo {
+  transition: .4s;
+  cursor: pointer;
+}
+.App-logo:hover {
+  transform: rotate(180deg);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .App-logo-load {
     animation: App-logo-spin infinite 1s linear;
   }
 }

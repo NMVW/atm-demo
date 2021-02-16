@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, MouseEvent, ReactHTMLElement } from 'react';
 import logo from './logo.png';
 import './App.css';
 import currency from 'currency.js';
@@ -8,6 +8,7 @@ import { State, Txn } from '../../interfaces';
 import { computeBalance, fetchTxns, addTxn } from '../../services/redux';
 import WithdrawalForm from '../WithdrawalForm';
 import TxnList from '../TxnList';
+import AppMenu from '../Menu';
 
 import { useSelector, useDispatch } from 'react-redux';
 import Card from '@material-ui/core/Card';
@@ -53,6 +54,7 @@ function App () {
   const setBalance = () => dispatch(computeBalance({ txns }));
 
   const [ toast, setToast ] = useState('');
+  const [ menuAnchor, setMenuAnchor ] = useState<ReactHTMLElement<HTMLAnchorElement> | null>(null);
 
   // update current balance on txn changes
   useEffect(() => {
@@ -93,11 +95,13 @@ function App () {
     <Card style={{ maxWidth: 800, display: 'flex', padding: '2rem' }}>
       <CardContent>
         <header style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
-          <a href="https://github.com/NMVW/atm-demo" target="_blank" rel="noopener noreferrer">
-            <Tooltip title="Github repo" placement="top-start">
-              <Avatar className={isLoading ? 'App-logo': ''} src={logo} style={{ marginBottom: '1rem' }} />
-            </Tooltip>
-          </a>
+          <Avatar
+            className={isLoading ? 'App-logo-load': 'App-logo'}
+            src={logo}
+            style={{ marginBottom: '1rem' }}
+            onMouseOver={(ev: MouseEvent) => setMenuAnchor(ev.currentTarget as any)}
+          />
+          { menuAnchor && <AppMenu anchor={menuAnchor} close={() => setMenuAnchor(null)} /> }
           <Typography variant="overline" hidden={txnsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
           <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'right' }}>
             Remaining Balance<br />
