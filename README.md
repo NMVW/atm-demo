@@ -1,47 +1,42 @@
-# ATM Demo
+# Music Gallery
+Your assignment is to implement a music album dashboard using JavaScript and React.
 
-### Objective
+![UI mockup](https://raw.githubusercontent.com/NMVW/atm-demo/music-gallery/mockup.jpg)
 
- A simple react.js application that lets people see their recent transactions and enter a valid amount to withdraw.
+## Brief
+Your customers want to see which popular albums are being streamed, so naturally you roll up your sleeves and get to work. You quickly scribble down some notes and after a few hours of relentless work you have a design in mind.
 
-Initial designer napkin sketch
+## Tasks
+Implement assignment using:
+- Language: JavaScript
+- Framework: NextJS (preferred) or plain React
+- Connect your application to the Apple Music API at
+https://rss.applemarketingtools.com/api/v2/us/music/most-played/50/albums.json
+- Parse the API response and display the results as outlined in the design. Group albums by genres.
+- Implement a detail view for the movies in the list
+- Make sure that linking to detail pages as well as bookmarking works as expected
+- Implement search by filtering the list by title
 
-![atm wireframe](https://raw.githubusercontent.com/NMVW/atm-demo/master/atmdemo_ui_wireframe.jpg)
+## Deliverables
+Make sure to include all source code in the repository.
 
-### App Reqs
+## Evaluation Criteria
+- NextJS (if used), JavaScript and React best practices
+- We're looking for you to produce working code, with enough room to demonstrate how to structure components in a small program.
+- Show us your work through your commit history
+- Completeness: did you complete the features?
+- Correctness: does the functionality act in sensible, thought-out ways?
+- Maintainability: is it written in a clean, maintainable way?
+- Testing: is the system adequately tested?
 
-- [x] React.js
-- [x] Redux
-- [x] Display list of names and $ amounts of recent transactions
-- [x] Show form for creating a withdrawal transaction against the balance with "withdraw" button
-- [x] Include user input validation for withdrawals against rules:
-  - [x] Only withdrawal increments of $20 dollars
-  - [x] Cannot withdraw more than the remaining balance (available balance minus recent transactions)
-  - [x] Cannot withdraw < $0
+### Submit
+Please organize, design, test and document your code as if it were going into production - then submit by uploading a .zip archive.
 
-### User Flow
+All the best and happy coding,
 
-#### Initial Load of Account
+The Filmhub Team
 
-1. Pull recent transaction data from [this](https://app.fakejson.com/q/0Pm3bJKu?token=HbqwPS-BSqOehLpig2ePqg) mock api endpoint.
-2. Show the status of the REST request.
-3. Populate a redux store with the results of the api call (1).
-4. Show the results (transactions and amounts) from the redux store.
-5. Store remaining balance value in redux store.
-5. Display the remaining account balance at the top (Given a $2,000 initial starting balance minus the sum of the transaction amounts).
 
-#### Withdraw Funds
-6. User inputs amount to withdraw.
-7. On valid input, clicking withdraw button will reset the form to $0.00 and update the remaining balance in the redux store as well as populate a new transaction in the list of transactions. (Withdraw form has no backend functionality at this time)
-
-#### Visualize Account Activity
-- [x] Show a balance bar svg chart with % of remaining balance (available balance minus recent transactions), given a hard coded initial balance of $2,000. 
-- [x] Create a way to filter or sort transactions
-- [x] Parse the withdrawal form value to show a currency value
-
-###### Any extra additions that show off front end expertise are very welcome
-
-Offline mode supported - block `app.fakejson.com` request url in console to see client-side functionality
 
 -----
 

@@ -10,6 +10,7 @@
   transition: .4s;
   cursor: pointer;
 }
+
 .App-logo:hover {
   transform: rotate(180deg);
 }

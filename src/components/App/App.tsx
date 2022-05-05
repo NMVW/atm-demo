@@ -3,6 +3,7 @@ import logo from './logo.png';
 import './App.css';
 import currency from 'currency.js';
 
+import Search from '../Search';
 import Notice from '../Notice';
 import { State, Txn } from '../../interfaces';
 import { computeBalance, fetchTxns, addTxn } from '../../services/redux';
@@ -16,7 +17,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Avatar from '@material-ui/core/Avatar';
-import Tooltip from '@material-ui/core/Tooltip';
 import OfflineIcon from '@material-ui/icons/OfflineBolt';
 
 import { Provider } from 'react-redux';
@@ -47,11 +47,12 @@ function App () {
 
   // watch txns if list changes, recompute balance
   const currentBalance: number = useSelector((state: State) => state.accountBalance.current);
-
   const txnsLoadingStatus: string = useSelector((state: State) => state.txns.status);
-
   const txns: Txn[] = useSelector((state: State) => state.txns.list);
+
   const setBalance = () => dispatch(computeBalance({ txns }));
+
+  const [ searchInput, setSearchInput ] = useState('');
 
   const [ toast, setToast ] = useState('');
   const [ menuAnchor, setMenuAnchor ] = useState<ReactHTMLElement<HTMLAnchorElement> | null>(null);
@@ -92,9 +93,10 @@ function App () {
   const isLoading = txnsLoadingStatus === 'pending';
 
   return (
-    <Card style={{ maxWidth: 800, display: 'flex', padding: '2rem' }}>
+    <Card style={{ padding: '2rem' }}>
       <CardContent>
         <header style={{ flexDirection: 'row', display: 'flex', justifyContent: 'space-between' }}>
+          <Typography className="AccountBalance" variant="h2" gutterBottom>Filmhub Music</Typography>
           <Avatar
             className={isLoading ? 'App-logo-load': 'App-logo'}
             src={logo}
@@ -103,10 +105,7 @@ function App () {
           />
           { menuAnchor && <AppMenu anchor={menuAnchor} close={() => setMenuAnchor(null)} /> }
           <Typography variant="overline" hidden={txnsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
-          <Typography className="AccountBalance" variant="h6" gutterBottom style={{ textAlign: 'right' }}>
-            Remaining Balance<br />
-            { !isLoading ? <span style={{ color: 'teal' }}>{currency(currentBalance).format()}</span>: <Skeleton variant="text" height={40} /> }
-          </Typography>
+          <Search input={searchInput} update={setSearchInput} isLoading={isLoading} />
         </header>
         <Typography variant="h6" gutterBottom>
           Withdraw Cash
