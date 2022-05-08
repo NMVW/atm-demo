@@ -1,7 +1,7 @@
 # Music Gallery
 Your assignment is to implement a music album dashboard using JavaScript and React.
 
-![UI mockup](https://raw.githubusercontent.com/NMVW/atm-demo/music-gallery/mockup.jpg)
+![UI mockup](https://github.com/NMVW/atm-demo/blob/music-gallery/mockup.png)
 
 ## Brief
 Your customers want to see which popular albums are being streamed, so naturally you roll up your sleeves and get to work. You quickly scribble down some notes and after a few hours of relentless work you have a design in mind.

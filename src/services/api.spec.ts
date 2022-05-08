@@ -1,4 +1,4 @@
-import { fetchRecentTxns } from './api';
+import { fetchAlbums } from './api';
 
 const mockApiData = {
   // NOTE: assumption that list of txns is ordered time sequentially
@@ -49,14 +49,14 @@ const mockApiData = {
 describe('API', function() {
 
   test.skip('txns endpoint should return mock data', async function() {
-    const data = await fetchRecentTxns();
+    const data = await fetchAlbums();
     expect(data.status).toEqual('online');
     expect(data.txns).toEqual(mockApiData.transactions);
   });
 
   test.skip('txns endpoint should return less than 1000 items', async function() {
     // WARNING: if reached a larger number of txn count, need to sync up with team on implementing a cursored pagination api to keep client latency manageable
-    const data = await fetchRecentTxns();
+    const data = await fetchAlbums();
     expect(data.txns.length < 1000).toEqual(true);
   });
 

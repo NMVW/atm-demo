@@ -5,10 +5,9 @@ import currency from 'currency.js';
 
 import Search from '../Search';
 import Notice from '../Notice';
-import { State, Txn } from '../../interfaces';
-import { computeBalance, fetchTxns, addTxn } from '../../services/redux';
-import WithdrawalForm from '../WithdrawalForm';
-import TxnList from '../TxnList';
+import { State, Album } from '../../interfaces';
+import { fetchAlbums, hydrate } from '../../services/redux';
+import AlbumList from '../AlbumList';
 import AppMenu from '../Menu';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -45,52 +44,44 @@ function App () {
 
   const dispatch = useDispatch();
 
-  // watch txns if list changes, recompute balance
-  const currentBalance: number = useSelector((state: State) => state.accountBalance.current);
-  const txnsLoadingStatus: string = useSelector((state: State) => state.txns.status);
-  const txns: Txn[] = useSelector((state: State) => state.txns.list);
-
-  const setBalance = () => dispatch(computeBalance({ txns }));
+  const selectedAlbum: string | null = useSelector((state: State) => state.selectedAlbum);
+  const albumsLoadingStatus: string = useSelector((state: State) => state.albums.status);
+  const albums: Album[] = useSelector((state: State) => state.albums.list);
 
   const [ searchInput, setSearchInput ] = useState('');
 
   const [ toast, setToast ] = useState('');
   const [ menuAnchor, setMenuAnchor ] = useState<ReactHTMLElement<HTMLAnchorElement> | null>(null);
 
-  // update current balance on txn changes
-  useEffect(() => {
-    setBalance();
-  }, [txns]);
-
-  // fetch txns on initial load
+  // fetch albums on initial load
   useEffect(() => {
 
-    async function fetchTransactions() {
-      // fetch and add txns to store
-      const response = await dispatch(fetchTxns()) as any;
-      response.payload.txns.forEach((txn: Txn) => dispatch(addTxn(txn)));
+    async function fetchRecentAlbums() {
+      // fetch and add albums to store
+      const albums = await dispatch(fetchAlbums()) as any;
+      dispatch(hydrate(albums));
     }
 
-    fetchTransactions();
+    fetchRecentAlbums();
 
   }, []);
 
   // toast watcher
   useEffect(() => {
-    switch (txnsLoadingStatus) {
+    switch (albumsLoadingStatus) {
       case 'pending':
-        setToast('Loading account activity...');
+        setToast('Loading top 50 albums...');
         break;
       case 'online':
-        setToast('Account loaded.');
+        setToast('Albums loaded.');
         break;
       case 'error':
-        setToast('Account data unavailable.');
+        setToast('Album data unavailable.');
         break;
     }
-  }, [txnsLoadingStatus]);
+  }, [albumsLoadingStatus]);
 
-  const isLoading = txnsLoadingStatus === 'pending';
+  const isLoading = albumsLoadingStatus === 'pending';
 
   return (
     <Card style={{ padding: '2rem' }}>
@@ -104,18 +95,14 @@ function App () {
             onMouseOver={(ev: MouseEvent) => setMenuAnchor(ev.currentTarget as any)}
           />
           { menuAnchor && <AppMenu anchor={menuAnchor} close={() => setMenuAnchor(null)} /> }
-          <Typography variant="overline" hidden={txnsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
+          <Typography variant="overline" hidden={albumsLoadingStatus !== 'error'}><OfflineIcon />Offline</Typography>
           <Search input={searchInput} update={setSearchInput} isLoading={isLoading} />
         </header>
-        <Typography variant="h6" gutterBottom>
-          Withdraw Cash
-        </Typography>
-        <WithdrawalForm setToast={setToast} isLoading={isLoading} />
         <br />
         <Typography variant="h6" gutterBottom>
-          Recent Transactions
+          Recent Albums
         </Typography>
-        <TxnList txns={txns} isLoading={isLoading} />
+        <AlbumList albums={albums} isLoading={isLoading} />
         { toast && <Notice message={toast} stickMs={1000} reset={() => setToast('')} /> }
       </CardContent>
     </Card>
