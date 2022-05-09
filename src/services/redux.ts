@@ -1,4 +1,4 @@
-import { State, Album } from '../interfaces';
+import { State, Album, AlbumGenreMap } from '../interfaces';
 
 import { combineReducers } from 'redux';
 import { configureStore, createSlice, createAsyncThunk, ActionReducerMapBuilder } from '@reduxjs/toolkit';
@@ -8,7 +8,7 @@ const INITIAL_STATE: State = {
   selectedAlbum: null,
   albums: {
     status: '',
-    list: [],
+    map: {},
   },
 };
 
@@ -41,30 +41,36 @@ const albumsSlice = createSlice({
   reducers: {
 
     hydrate: {
-      reducer(state: {status: string, list: Album[] | []}, action: Action): any {
+      reducer(state: {status: string, map: AlbumGenreMap | {}}, action: Action): any {
         return action.payload;
       },
-      prepare(album) {
-        return album;
+      prepare(thunkResp) {
+        const { payload } = thunkResp;
+        return {
+          payload: {
+            status: payload.status,
+            map: payload.albums,
+          }
+        };
       }
     },
 
   },
 
   // handle async request states
-  extraReducers: (builder: ActionReducerMapBuilder<{status: string, list: Album[]}>) => {
+  extraReducers: (builder: ActionReducerMapBuilder<{status: string, map: AlbumGenreMap}>) => {
 
-    builder.addCase(fetchAlbums.pending, (state: { status: string, list: Album[] }, action: any) => {
+    builder.addCase(fetchAlbums.pending, (state: { status: string, map: AlbumGenreMap }, action: any) => {
       state.status = 'pending';
       return state;
     });
 
-    builder.addCase(fetchAlbums.fulfilled, (state: { status: string, list: Album[] }, action: any) => {
+    builder.addCase(fetchAlbums.fulfilled, (state: { status: string, map: AlbumGenreMap }, action: any) => {
       state.status = action.payload.status; // can be error
       return state;
     });
 
-    builder.addCase(fetchAlbums.rejected, (state: { status: string, list: Album[] }, action: any) => {
+    builder.addCase(fetchAlbums.rejected, (state: { status: string, map: AlbumGenreMap }, action: any) => {
       state.status = 'error';
       return state;
     });

@@ -1,23 +1,51 @@
-import { Album } from '../../interfaces';
+import Typography from '@material-ui/core/Typography';
+
+import ImageList from '@material-ui/core/GridList';
+import ImageListItem from '@material-ui/core/GridListTile';
+import ImageListItemBar from '@material-ui/core/GridListTileBar';
+
+import { Album, AlbumGenreMap } from '../../interfaces';
 
 import React from 'react';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
 
-const columns: ColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Source', width: 250 },
-  { field: 'amount', headerName: 'Amount', width: 130 },
-];
+interface Title {
+  id: string
+  name: string
+  artistName: string
+  coverImage: string
+}
 
-export default function DataTable(props: { isLoading: boolean, albums: Album[] }) {
+const Genre = (props: {genre: string}) => <Typography variant="h4" gutterBottom>{props.genre}</Typography>
+
+const TitleList = (props: {titles: Title[]}) => {
   return (
-    <div>{ props.isLoading ? 'loading' : JSON.stringify(props.albums)}</div>
+    <ImageList>
+      {props.titles.map(({ id, name, artistName, coverImage }) => (
+        <ImageListItem key={id}>
+          <img src={coverImage} />
+          <ImageListItemBar
+            title={name}
+            subtitle={<span>{artistName}</span>}
+            titlePosition="bottom"
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
+  )
+};
+
+export default function AlbumList(props: { isLoading: boolean, albums: AlbumGenreMap }) {
+  const albums = props.albums || {};
+  const firstStyle = { marginTop: '5rem' };
+  debugger;
+  return (
+    <>
+      { Object.entries(albums).map(([genre, albums], i) => (
+        <div style={i === 0 ? firstStyle: {}}>
+          <Genre genre={genre} />
+          <TitleList titles={albums} />
+        </div>
+      )) }
+    </>
   );
-  // const txns = props.txns.map((txn: Album) => ({ ...txn, amount: currency(txn.amount).format() }));
-  //
-  // return (
-  //   <div className="AlbumTable" style={{ height: 400, width: '100%' }}>
-  //     <DataGrid rows={txns.reverse()} columns={columns} pageSize={5} loading={props.isLoading} />
-  //   </div>
-  // );
 }

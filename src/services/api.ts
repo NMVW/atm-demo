@@ -1,12 +1,12 @@
 import mock_albums_api_data from './mock-api-data.json';
 
-import { Album, AlbumResponse } from '../interfaces';
+import { Album, AlbumResponse, AlbumGenreMap } from '../interfaces';
 
 const albums_api_url = process.env.REACT_APP_API_ALBUMS_URL as string;
 
 interface Albums {
   status: 'online' | 'offline' | 'error'
-  albums: {[genre: string]: Array<Album>}
+  albums: AlbumGenreMap
 }
 
 export async function fetchAlbums(): Promise<Albums> {
@@ -46,7 +46,7 @@ export async function fetchAlbums(): Promise<Albums> {
 }
 
 /**
-  NOTE: Cache transformed response to minimize unnecessary computes
+  TODO: Cache transformed response to minimize unnecessary computes
 */
 function transformResponse(albumResponse: AlbumResponse[]): Albums["albums"] {
 

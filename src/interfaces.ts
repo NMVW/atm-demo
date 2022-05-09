@@ -2,7 +2,7 @@ export interface State {
   selectedAlbum: null | string,
   albums: {
     status: 'online' | 'pending' | 'error' | ''
-    list: Array<Album> | []
+    map: AlbumGenreMap | {}
   }
 }
 
@@ -25,4 +25,8 @@ export interface Album {
   artistName: string
   coverImage: string // artworkUrl100
   genres: string[] // genre.name
+}
+
+export interface AlbumGenreMap {
+  [genre: string]: Album[]
 }
