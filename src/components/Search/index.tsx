@@ -6,15 +6,6 @@ import InputBase from '@material-ui/core/InputBase';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 export default function Search(props: { input: string, isLoading: boolean, update: (text: string) => void }) {
-  // const [open, setOpen] = React.useState(true);
-
-  // const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-  //   setOpen(false);
-  //   props.reset && props.reset();
-  // };
-
-  const [ input, setInput ] = useState(props.input);
-  console.log('local input', input);
   return (
     <SearchBar>
       <SearchIconWrapper>
@@ -27,8 +18,8 @@ export default function Search(props: { input: string, isLoading: boolean, updat
             placeholder="Search"
             inputProps={{ 'aria-label': 'search' }}
             type="string"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            value={props.input}
+            onChange={(e) => props.update(e.target.value)}
           />
         )
       }

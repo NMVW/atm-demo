@@ -40,6 +40,7 @@ const theme = createMuiTheme({
   }
 });
 
+// TODO: belongs in redux selector
 function findAlbumFromMap(albumMap: AlbumGenreMap = {}, selectedId: string | null): Album | null {
   if (!selectedId) {
     return null;
@@ -53,11 +54,24 @@ function findAlbumFromMap(albumMap: AlbumGenreMap = {}, selectedId: string | nul
   return null;
 }
 
+// TODO: belongs in redux selector
+function filterAlbumsByTitle(albumMap: AlbumGenreMap = {}, inputTitle: string): AlbumGenreMap {
+  if (!inputTitle) return albumMap;
+  const filteredMap = {} as AlbumGenreMap;
+  for (const genre in albumMap) {
+    filteredMap[genre] = albumMap[genre].filter(a => Boolean(a.name.match(inputTitle)));
+  }
+  return filteredMap;
+}
+
 function App () {
 
   const dispatch = useDispatch();
 
-  const deselectAlbum = () => dispatch(selectAlbum(null));
+  const deselectAlbum = () => {
+    setSearchInput('');
+    dispatch(selectAlbum(null));
+  };
   const selectedAlbum: Album | null = useSelector((state: State) => findAlbumFromMap(state.albums.map, state.selectedAlbum));
   const albumsLoadingStatus: string = useSelector((state: State) => state.albums.status);
   const albums: AlbumGenreMap = useSelector((state: State) => state.albums.map);
@@ -123,7 +137,7 @@ function App () {
           <Search input={searchInput} update={setSearchInput} isLoading={isLoading} />
         </header>
         <br />
-        { selectedAlbum ? <AlbumDetail album={selectedAlbum} />: <AlbumList albums={albums} isLoading={isLoading} /> }
+        { selectedAlbum ? <AlbumDetail album={selectedAlbum} />: <AlbumList albums={filterAlbumsByTitle(albums, searchInput)} isLoading={isLoading} /> }
         { toast && <Notice message={toast} stickMs={1000} reset={() => setToast('')} /> }
       </CardContent>
     </Card>
