@@ -5,7 +5,8 @@ import './App.css';
 import Search from '../Search';
 import Notice from '../Notice';
 import { State, Album, AlbumGenreMap } from '../../interfaces';
-import { fetchAlbums, hydrate } from '../../services/redux';
+import { selectAlbum, fetchAlbums, hydrate } from '../../services/redux';
+import AlbumDetail from '../AlbumDetail';
 import AlbumList from '../AlbumList';
 import AppMenu from '../Menu';
 
@@ -39,11 +40,25 @@ const theme = createMuiTheme({
   }
 });
 
+function findAlbumFromMap(albumMap: AlbumGenreMap = {}, selectedId: string | null): Album | null {
+  if (!selectedId) {
+    return null;
+  }
+  for (const genre in albumMap) {
+    const selectedAlbum = albumMap[genre].find(a => a.id === selectedId);
+    if (selectedAlbum) {
+      return selectedAlbum;
+    }
+  }
+  return null;
+}
+
 function App () {
 
   const dispatch = useDispatch();
 
-  const selectedAlbum: string | null = useSelector((state: State) => state.selectedAlbum);
+  const deselectAlbum = () => dispatch(selectAlbum(null));
+  const selectedAlbum: Album | null = useSelector((state: State) => findAlbumFromMap(state.albums.map, state.selectedAlbum));
   const albumsLoadingStatus: string = useSelector((state: State) => state.albums.status);
   const albums: AlbumGenreMap = useSelector((state: State) => state.albums.map);
 
@@ -96,7 +111,7 @@ function App () {
           justifyContent: 'space-between',
           zIndex: 100,
         }}>
-          <Typography className="AccountBalance" variant="h2" gutterBottom>Filmhub Music</Typography>
+          <Typography onClick={deselectAlbum} className="AccountBalance" variant="h2" gutterBottom>Filmhub Music</Typography>
           <Avatar
             className={isLoading ? 'App-logo-load': 'App-logo'}
             src={logo}
@@ -108,7 +123,7 @@ function App () {
           <Search input={searchInput} update={setSearchInput} isLoading={isLoading} />
         </header>
         <br />
-        <AlbumList albums={albums} isLoading={isLoading} />
+        { selectedAlbum ? <AlbumDetail album={selectedAlbum} />: <AlbumList albums={albums} isLoading={isLoading} /> }
         { toast && <Notice message={toast} stickMs={1000} reset={() => setToast('')} /> }
       </CardContent>
     </Card>

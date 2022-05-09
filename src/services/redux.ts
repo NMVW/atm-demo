@@ -23,7 +23,7 @@ const selectedAlbumSlice = createSlice({
   reducers: {
 
     selectAlbum(state, action) {
-      return action?.payload?.id || null;
+      return action?.payload || null;
     }
 
   },

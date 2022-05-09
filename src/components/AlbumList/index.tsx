@@ -1,4 +1,8 @@
+import { useDispatch } from 'react-redux';
+import { selectAlbum } from '../../services/redux';
+
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
 import ImageList from '@material-ui/core/GridList';
 import ImageListItem from '@material-ui/core/GridListTile';
@@ -18,10 +22,12 @@ interface Title {
 const Genre = (props: {genre: string}) => <Typography variant="h4" gutterBottom>{props.genre}</Typography>
 
 const TitleList = (props: {titles: Title[]}) => {
+  const dispatch = useDispatch();
+  const select = (id: string) => () => dispatch(selectAlbum(id));
   return (
     <ImageList>
       {props.titles.map(({ id, name, artistName, coverImage }) => (
-        <ImageListItem key={id}>
+        <ImageListItem key={id} onClick={select(id)}>
           <img src={coverImage} />
           <ImageListItemBar
             title={name}
@@ -37,11 +43,11 @@ const TitleList = (props: {titles: Title[]}) => {
 export default function AlbumList(props: { isLoading: boolean, albums: AlbumGenreMap }) {
   const albums = props.albums || {};
   const firstStyle = { marginTop: '5rem' };
-  debugger;
   return (
     <>
       { Object.entries(albums).map(([genre, albums], i) => (
         <div style={i === 0 ? firstStyle: {}}>
+          <Divider />
           <Genre genre={genre} />
           <TitleList titles={albums} />
         </div>
